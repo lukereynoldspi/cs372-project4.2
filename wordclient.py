@@ -21,17 +21,21 @@ def get_next_word_packet(s):
     """
 
     global packet_buffer
-    while True:
-        if len(packet_buffer) > 1:
-            word_length = packet_buffer[:2].decode()
-            word_length = int(word_length)
-            
-        data = s.recv(5)
-        packet_buffer.append(data)
-
-
     
-
+    while True:
+        packet_buffer = b''
+        data = s.recv(5)
+        packet_buffer = data + packet_buffer
+        if len(packet_buffer) > 0:
+            bytestring_length = int.from_bytes(packet_buffer[:WORD_LEN_SIZE], "big") + WORD_LEN_SIZE
+            while len(packet_buffer) < bytestring_length:
+                data = s.recv(5)
+                packet_buffer = data + packet_buffer
+            if len(packet_buffer) > bytestring_length:
+                packet_buffer = packet_buffer[:bytestring_length]
+            return packet_buffer
+        else:
+            return None
 
 def extract_word(word_packet):
     """
