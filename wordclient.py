@@ -23,7 +23,6 @@ def get_next_word_packet(s):
     global packet_buffer
     
     while True:
-        packet_buffer = b''
         data = s.recv(5)
         packet_buffer = data + packet_buffer
         if len(packet_buffer) > 0:
@@ -32,8 +31,9 @@ def get_next_word_packet(s):
                 data = s.recv(5)
                 packet_buffer = data + packet_buffer
             if len(packet_buffer) > bytestring_length:
-                packet_buffer = packet_buffer[:bytestring_length]
-            return packet_buffer
+                word_packet = packet_buffer[:bytestring_length]
+            packet_buffer = packet_buffer[bytestring_length:] # Basically resets packet buffer
+            return word_packet
         else:
             return None
 
