@@ -25,11 +25,16 @@ def get_next_word_packet(s):
     while True:
         data = s.recv(5)
         packet_buffer = data + packet_buffer
+        num = (packet_buffer[:2])
+        print(int.from_bytes(num, "big"))
+        print(packet_buffer[2:].decode())
         if len(packet_buffer) > 0:
+            
             bytestring_length = int.from_bytes(packet_buffer[:WORD_LEN_SIZE], "big") + WORD_LEN_SIZE
             while len(packet_buffer) < bytestring_length:
                 data = s.recv(5)
                 packet_buffer = data + packet_buffer
+            word_packet = b''
             if len(packet_buffer) > bytestring_length:
                 word_packet = packet_buffer[:bytestring_length]
             packet_buffer = packet_buffer[bytestring_length:] # Basically resets packet buffer
