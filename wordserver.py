@@ -1,6 +1,6 @@
 # Some common English words
 
-WORDSs = [
+WORDS = [
     "the", "be", "and", "a", "of", "to", "in", "you", "it", "have",
     "to", "that", "for", "do", "he", "with", "on", "this", "we", "that",
     "not", "but", "they", "say", "at", "what", "his", "from", "go",
@@ -26,8 +26,6 @@ WORDSs = [
     "where", "believe", "country", "always", "week", "point", "hand",
     "off", "play", "turn", "few", "group", "such"
 ]
-
-WORDS = ["chicanery"]
 
 import sys
 import socket

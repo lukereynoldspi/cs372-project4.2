@@ -33,8 +33,6 @@ def get_next_word_packet(s):
                 data = s.recv(5)
                 packet_buffer = packet_buffer + data
             word_packet = b''
-            print(packet_buffer)
-            print("Bruh + " + packet_buffer.decode())
             if len(packet_buffer) > bytestring_length:
                 word_packet = packet_buffer[:bytestring_length]
             packet_buffer = packet_buffer[bytestring_length:] # Basically resets packet buffer
