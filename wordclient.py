@@ -23,22 +23,18 @@ def get_next_word_packet(s):
     global packet_buffer
     
     while True:
-        data = s.recv(5)
+        data = s.recv(5) #first chunk of data
         packet_buffer = packet_buffer + data
-
-        if len(packet_buffer) > 0:
-            word_length = (int.from_bytes((packet_buffer[:2]), "big"))
-            bytestring_length = word_length + WORD_LEN_SIZE
+        if packet_buffer != b'': # checks if packet buffer is empty or not
+            bytestring_length = (int.from_bytes((packet_buffer[:WORD_LEN_SIZE]), "big")) + WORD_LEN_SIZE
             while len(packet_buffer) < bytestring_length:
                 data = s.recv(5)
                 packet_buffer = packet_buffer + data
-            word_packet = b''
-            if len(packet_buffer) > bytestring_length:
-                word_packet = packet_buffer[:bytestring_length]
+            word_packet = packet_buffer[:bytestring_length] 
             packet_buffer = packet_buffer[bytestring_length:] # Basically resets packet buffer
             return word_packet
         else:
-            return None
+            return None # Returns none if there are no packets availible
 
 def extract_word(word_packet):
     """
@@ -49,9 +45,7 @@ def extract_word(word_packet):
 
     Returns the word decoded as a string.
     """
-
-    word_packet = word_packet[2:].decode()
-    return word_packet
+    return word_packet[2:].decode() # decodes word packet by removing first 2 bytes
 
 # Do not modify:
 
